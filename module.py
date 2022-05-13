@@ -6,15 +6,16 @@ import pickle
 import re
 
 import soynlp
-
 from gensim.models.fasttext import FastText
+import tensorflow
 
+import keras
 from keras.preprocessing.sequence import pad_sequences
 from keras.utils.np_utils import to_categorical
 from keras.models import load_model
 from keras.models import Model
 
-#from IPython.core.display import display, HTML
+# from IPython.core.display import display, HTML
 
 # 경고 메시지 숨기기
 import warnings
@@ -128,15 +129,20 @@ def visualize_attention(model, word2index, x_):
     title_attentions_text = attentions_text[np.where(x_[0][:9] != 0)]
     body_attentions_text = attentions_text[np.where(x_[0] != 0)[len(title_attentions_text):]]
 
+    title_token = []
+    title_color = []
+    body_token = []
+    body_color = []
+
     for token, title_attention in zip(title_decoded_text, title_attentions_text):
-        title_token = token
-        title_attention = title_attention
+        title_token.append(token)
+        title_color.append(attention2color(title_attention))
 
     for token, body_attention in zip(body_decoded_text, body_attentions_text):
-        body_token = token
-        body_attention = body_attention
+        body_token.append(token)
+        body_color.append(attention2color(body_attention))
 
-    return label_probs, attention2color(title_attention), title_token, attention2color(body_attention), body_token
+    return label_probs, title_color, title_token, body_color, body_token
 
 # title = "목포항서 유조부선 구멍 생겨…긴급 방제"
 # body = "부산항 북항에 정박해 있던 유조부선(유조선의 부선)에서 기름이 바다로 유출돼 해경이 긴급 방제 작업에 나섰다. 4일 부산해경에 따르면 이날 오전 10시 44분쯤 부산시 동구 좌천동 부산항 북항 제5 부두에서 기름 공급 작업을 준비 중이던 유조부선 A호 선내에 있던 중질유 일부가 바다로 유출됐다. 해경은 방제정 등 총 6척의 선박을 동원해 사고 선박 주변에 오일펜스를 설치했다. 이어 유흡착재를 이용해 바다 위 검은색 기름띠 등 방제 작업을 진행하고 있다. 해경은 A호가 화물유 자체 이송 중 밸브 오작동으로 중질유가 바다로 흘러넘쳐 발생한 것으로 보고 있다. 해경은 방제작업이 마무리되는 대로 선박 관계자 등을 상대로 자세한 사고 원인과 유출량 등을 조사할 예정이다."
