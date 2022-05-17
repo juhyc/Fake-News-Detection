@@ -1,45 +1,28 @@
-import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
-import seaborn as sns
 import pickle
 import re
+# 경고 메시지 숨기기
+import warnings
 
-import soynlp
-import gensim
+import numpy as np
+import pandas as pd
 from gensim.models.fasttext import FastText
-import tensorflow
-
+# import tensorflow
+from keras import Input
+from keras import backend as K
+from keras import initializers, regularizers, constraints
+from keras.layers import BatchNormalization
+from keras.layers import Bidirectional
+from keras.layers import Dense
+from keras.layers import Embedding
+from keras.layers import LSTM
+from keras.layers import Layer
+from keras.layers import LeakyReLU  # 추가
+from keras.models import Model
 import keras
 from keras.preprocessing.sequence import pad_sequences
 from keras.utils.np_utils import to_categorical
-from keras.models import load_model
-from keras.models import Model
-
-from keras.layers import Bidirectional
-from keras.layers import Embedding
-from keras.layers import LeakyReLU # 추가
-from keras.layers import Dense, Input, Flatten
-from keras.layers import Conv1D, MaxPooling1D, Embedding,Dropout
-from keras.models import Model
-
-from keras.models import Sequential
-from keras.layers import BatchNormalization, concatenate, Wrapper
-from keras.layers import LSTM, GRU
-from keras.layers import Bidirectional
-
-from keras.layers import Layer
-import keras.backend as K
-from keras import layers
-from keras import Input
-
-from keras import backend as K
-from keras import initializers, regularizers, constraints
 
 # from IPython.core.display import display, HTML
-
-# 경고 메시지 숨기기
-import warnings
 warnings.filterwarnings("ignore")
 
 class keras_Attention(Layer):
@@ -243,9 +226,6 @@ def visualize_attention(model, word2index, x_):
 
     return label_probs, title_color, title_token, body_color, body_token
 
-# title = "목포항서 유조부선 구멍 생겨…긴급 방제"
-# body = "부산항 북항에 정박해 있던 유조부선(유조선의 부선)에서 기름이 바다로 유출돼 해경이 긴급 방제 작업에 나섰다. 4일 부산해경에 따르면 이날 오전 10시 44분쯤 부산시 동구 좌천동 부산항 북항 제5 부두에서 기름 공급 작업을 준비 중이던 유조부선 A호 선내에 있던 중질유 일부가 바다로 유출됐다. 해경은 방제정 등 총 6척의 선박을 동원해 사고 선박 주변에 오일펜스를 설치했다. 이어 유흡착재를 이용해 바다 위 검은색 기름띠 등 방제 작업을 진행하고 있다. 해경은 A호가 화물유 자체 이송 중 밸브 오작동으로 중질유가 바다로 흘러넘쳐 발생한 것으로 보고 있다. 해경은 방제작업이 마무리되는 대로 선박 관계자 등을 상대로 자세한 사고 원인과 유출량 등을 조사할 예정이다."
-
 def Visualization_Result(title, body, label):
     df = pd.DataFrame(columns=['title', 'body', 'label'])
     df.loc[0] = [title, body, 1]
@@ -291,9 +271,9 @@ def Visualization_Result(title, body, label):
     outs = Bidirectional(LSTM(100, dropout=0.2, return_sequences=True))(embedded_inputs)
     outs = BatchNormalization()(outs)
     sentence, word_scord = keras_Attention(return_attention=True, name="attention_vec")(outs)
-    fc = Dense(256, kernel_initializer='he_normal', activation=keras.layers.LeakyReLU(alpha=0.3))(sentence)
-    fc = Dense(128, kernel_initializer='he_normal', activation=keras.layers.LeakyReLU(alpha=0.3))(fc)
-    fc = Dense(64, kernel_initializer='he_normal', activation=keras.layers.LeakyReLU(alpha=0.3))(fc)
+    fc = Dense(256, kernel_initializer='he_normal', activation=LeakyReLU(alpha=0.3))(sentence)
+    fc = Dense(128, kernel_initializer='he_normal', activation=LeakyReLU(alpha=0.3))(fc)
+    fc = Dense(64, kernel_initializer='he_normal', activation=LeakyReLU(alpha=0.3))(fc)
     output = Dense(2, activation='softmax')(fc)
 
     model = Model(inputs=inputs, outputs=output)
