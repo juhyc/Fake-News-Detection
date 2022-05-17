@@ -6,6 +6,7 @@ import pickle
 import re
 
 import soynlp
+import gensim
 from gensim.models.fasttext import FastText
 import tensorflow
 
@@ -15,11 +16,110 @@ from keras.utils.np_utils import to_categorical
 from keras.models import load_model
 from keras.models import Model
 
+from keras.layers import Bidirectional
+from keras.layers import Embedding
+from keras.layers import LeakyReLU # 추가
+from keras.layers import Dense, Input, Flatten
+from keras.layers import Conv1D, MaxPooling1D, Embedding,Dropout
+from keras.models import Model
+
+from keras.models import Sequential
+from keras.layers import BatchNormalization, concatenate, Wrapper
+from keras.layers import LSTM, GRU
+from keras.layers import Bidirectional
+
+from keras.layers import Layer
+import keras.backend as K
+from keras import layers
+from keras import Input
+
+from keras import backend as K
+from keras import initializers, regularizers, constraints
+
 # from IPython.core.display import display, HTML
 
 # 경고 메시지 숨기기
 import warnings
 warnings.filterwarnings("ignore")
+
+class keras_Attention(Layer):
+    def __init__(self,
+                 W_regularizer=None, b_regularizer=None,
+                 W_constraint=None, b_constraint=None,
+                 bias=True, return_attention=False,
+                 **kwargs):
+        self.supports_masking = True
+        self.return_attention = return_attention
+        self.init = initializers.get('glorot_uniform')
+
+        self.W_regularizer = regularizers.get(W_regularizer)
+        self.b_regularizer = regularizers.get(b_regularizer)
+
+        self.W_constraint = constraints.get(W_constraint)
+        self.b_constraint = constraints.get(b_constraint)
+
+        self.bias = bias
+        super(keras_Attention, self).__init__(**kwargs)
+
+
+    def build(self, input_shape):
+        assert len(input_shape) == 3
+
+        self.W = self.add_weight(shape=(input_shape[-1],),
+                                 initializer=self.init,
+                                 name='{}_W'.format(self.name),
+                                 regularizer=self.W_regularizer,
+                                 constraint=self.W_constraint)
+        if self.bias:
+            self.b = self.add_weight(shape=(input_shape[1],),
+                                     initializer='zero',
+                                     name='{}_b'.format(self.name),
+                                     regularizer=self.b_regularizer,
+                                     constraint=self.b_constraint)
+        else:
+            self.b = None
+
+        self.built = True
+
+    def compute_mask(self, input, input_mask=None):
+        # do not pass the mask to the next layers
+        return None
+
+    def call(self, x, mask=None):
+        eij = K.squeeze(K.dot(x, K.expand_dims(self.W)), axis=-1)
+
+        if self.bias:
+            eij += self.b
+
+        eij = K.tanh(eij)
+
+        a = K.exp(eij)
+
+        # apply mask after the exp. will be re-normalized next
+        if mask is not None:
+            # Cast the mask to floatX to avoid float64 upcasting in theano
+            a *= K.cast(mask, K.floatx())
+
+        # in some cases especially in the early stages of training the sum may be almost zero
+        # and this results in NaN's. A workaround is to add a very small positive number ε to the sum.
+        # a /= K.cast(K.sum(a, axis=1, keepdims=True), K.floatx())
+        a /= K.cast(K.sum(a, axis=1, keepdims=True) + K.epsilon(), K.floatx())
+
+        weighted_input = x * K.expand_dims(a)
+
+        result = K.sum(weighted_input, axis=1)
+
+        if self.return_attention:
+            return [result, a]
+        return result
+
+    def compute_output_shape(self, input_shape):
+        if self.return_attention:
+            return [(input_shape[0], input_shape[-1]),
+                    (input_shape[0], input_shape[1])]
+        else:
+            return input_shape[0], input_shape[-1]
+
 
 def del_special(df):
     # 특수문자, 숫자 제거
@@ -99,8 +199,7 @@ def attention2color(attention_score):
 
 def visualize_attention(model, word2index, x_):
     # Make new model for output predictions and attentions
-    model_att = Model(inputs=model.input, \
-                      outputs=[model.output, model.get_layer('attention_vec').output[-1]])
+    model_att = Model(inputs=model.input, outputs=[model.output, model.get_layer('attention_vec').output[-1]])
 
     title_tokenized_sample = [wordidx for wordidx in x_[0][:9] if wordidx != 0]
     body_tokenized_sample = [wordidx for wordidx in x_[0][9:] if wordidx != 0]
@@ -173,16 +272,35 @@ def Visualization_Result(title, body, label):
     max_b_seq_len = 254
     x_, y_ = separated_padding_(df_seq, 'title_sequences', 'body_sequences', max_t_seq_len, max_b_seq_len)
 
-    # 모델 로드
-    # load: 1 input biLSTM + Attention mechanism
-    filepath = 'data/1input_bilstm_att_model'
-    bilstm_att_model = load_model(filepath=filepath)
+    embedding_matrix = np.zeros((len(word2index) + 1, 100))
+    for word, i in word2index.items():
+        embedding_vector = fasttext_model.wv[word]
+        if embedding_vector is not None:
+            # words not found in embedding index will be all-zeros.
+            embedding_matrix[i] = embedding_vector
 
-    label_probs, title_color, title_token, body_color, body_token = visualize_attention(bilstm_att_model, word2index, x_)
+    # 모델 로드: one input biLSTM + Attention mechanism
+    inputs = Input(shape=(263,))
+
+    embedded_inputs = Embedding(len(word2index) + 1,
+                                100,
+                                weights=[embedding_matrix],
+                                trainable=False,
+                                name='embedding')(inputs)
+
+    outs = Bidirectional(LSTM(100, dropout=0.2, return_sequences=True))(embedded_inputs)
+    outs = BatchNormalization()(outs)
+    sentence, word_scord = keras_Attention(return_attention=True, name="attention_vec")(outs)
+    fc = Dense(256, kernel_initializer='he_normal', activation=keras.layers.LeakyReLU(alpha=0.3))(sentence)
+    fc = Dense(128, kernel_initializer='he_normal', activation=keras.layers.LeakyReLU(alpha=0.3))(fc)
+    fc = Dense(64, kernel_initializer='he_normal', activation=keras.layers.LeakyReLU(alpha=0.3))(fc)
+    output = Dense(2, activation='softmax')(fc)
+
+    model = Model(inputs=inputs, outputs=output)
+    model.compile(loss='binary_crossentropy', optimizer='Adam', metrics=['accuracy'])
+
+    model.load_weights('data/1_input_bilstm_attention_ver219.ckpt').expect_partial()  # 추가
+
+    label_probs, title_color, title_token, body_color, body_token = visualize_attention(model, word2index, x_)
 
     return label_probs, title_color, title_token, body_color, body_token
-#
-# if __name__ == "__main__":
-#     cat_num=3
-#     keyword='박원순'
-#     print(timeline(cat_num, keyword))
