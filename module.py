@@ -175,12 +175,12 @@ def separated_padding_(df, title_idx_col, body_idx_col,  # 데이터프레임, �
 
 
 def rgb_to_hex(rgb):
-    return '#%02x%02x%02x' % rgb
+    return '#%02x%02x%02x%02x' % rgb
 
 
 def attention2color(attention_score):
     r = 255 - int(attention_score * 255)
-    color = rgb_to_hex((255, r, r))
+    color = rgb_to_hex((255, 0, 0, 255-r))
     return str(color)
 
 
