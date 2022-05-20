@@ -1,109 +1,110 @@
 <!DOCTYPE HTML>
 <!--
-	Eventually by HTML5 UP
-	html5up.net | @ajlkn
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+    Eventually by HTML5 UP
+    html5up.net | @ajlkn
+    Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
 -->
 <html>
-	<head>
-		<title>Fake News Detection</title>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-		<link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
-		<script src="{{ url_for('static', filename='js/main.js') }}"></script>
-	</head>
-
-	<script src="{{ url_for('static', filename='js/main.js') }}"></script>
-
-
-	<body class="is-preload">
-		<!-- Nav -->
-		<nav id="nav">
-			<ul>
-				<li><a href="/">Home</a></li>
-				<li><a href="{{url_for('about')}}">About</a></li>
-				<li class="break"><a href="{{url_for('fakenews')}}">Fake News</a></li>
-				<li><a href="{{url_for('contact')}}">Contact Us</a></li>
-			</ul>
-		</nav>
-
-		<!-- Header -->
-			<header id="header">
-				<h1>Fake News Detection</h1>
-				<p>You can experience fake news detection right away.</p>
-			</header>
-
-		<!-- Signup Form -->
-			<form method="POST" action="/predict">
-				<table style="width:80%" border="1" cellpadding="0" cellspacing="0">
-					<tr>
-						<td rowspan="2">
-							<div id="signup-form">
-								<input type="text" name="title" id="title" placeholder="Title" />
+    <head>
+        <title>Fake News Detection</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+        <link href="{{url_for('static', filename='css/main.css')}}" rel="stylesheet" />
+    </head>
+    <body class="is-preload">
+        <!-- Nav -->
+        <nav id="nav">
+            <ul>
+                <li><a href="/home">Home</a></li>
+                <li><a href="/about">About</a></li>
+                <li><a href="/fakenews">Fake News</a></li>
+                <li><a href="/contact">Contact Us</a></li>
+            </ul>
+        </nav>
+        <!-- Header -->
+            <header id="header">
+                <h1>Fake News Detection</h1>
+                <p>You can experience fake news detection right away.</p>
+            </header>
+        <!-- Signup Form -->
+            <form method="POST" action="/predict">
+                <table style="width:80%" border="1" cellpadding="0" cellspacing="0">
+                    <tr>
+                        <td rowspan="2">
+                            <div id="signup-form">
+                            <input type="text" name="title" id="title" placeholder="Title"  value="{{title}}" />
+                            </div>
+                            <div>
+                            <br>
+                            </div>
+                            <div id="signup-form">
+                            <!-- <input type="text2" name="body" id="body" placeholder="Body" /> -->
+                            <textarea name="body" id="body" placeholder="Body">{{body}}</textarea>
+                            </div>
+                            <div>
+                            <br>
+                            </div>
+                            <input type="submit" value="Start" />
+                        </td>
+                        <td>
+                            <div>
+                                <p style='font-size: large'><b>{{Title}}</b>
+                                    {% for i in range(title_color | length) %}
+                                        <span style='background-color: {{ title_color[i] }};'>{{title_token[i]}} </span>
+                                    {% endfor %}
+                                </p>
+                                <hr>
+                                <p style='font-size: large'><b>{{Body}}</b>
+                                    {% for i in range(body_color | length) %}
+                                        <span style='background-color: {{ body_color[i] }};'>{{body_token[i]}} </span>
+                                    {% endfor %}
+                                </p><br>
 							</div>
 							<div>
-							<br>
+								<canvas id="doughnut_chart" width="150vw" height="150vh"></canvas>
+								<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+								<script>
+									const ctx = document.getElementById('doughnut_chart').getContext('2d');
+									const doughnut_chart = new Chart(ctx, {
+										type: 'doughnut',
+										data: {
+										  labels: ["Real News", "Fake News"],
+										  datasets: [
+											{
+											  label: "Fake or Real News",
+											  backgroundColor: ["#e8c3b9","#8e5ea2"],
+											  data: [5.146266e-04, 9.994854e-01]
+											}
+										  ]
+										},
+										options: {
+										  title: {
+											display: true,
+											text: 'Check your News'
+										  }
+										}
+									});
+								</script>
 							</div>
-							<div id="signup-form-body">
-								<input type="text" name="body" id="body" placeholder="Body" />
-							</div>
-							<div>
-							<br>
-							</div>
-							<input type="submit" value="Start" onclick=show(); />
-						</td>
-						<td>
-							<div>
-								<p style='font-size: large'><b>{{Title}}  </b>
-									{% for i in range(title_color | length) %}
-										<span style='background-color: {{ title_color[i] }};'>{{title_token[i]}} </span>
-									{% endfor %}
-								</p>
-							<hr>
-								<p style='font-size: large'><b>{{Body}}  </b>
-									{% for i in range(body_color | length) %}
-										<span style='background-color: {{ body_color[i] }};'>{{body_token[i]}} </span>
-									{% endfor %}
-								</p><br>
-							</div>
-						</td>
-				</tr>
-				</table>
-			</form>
-
-		<!-- Signup Form -->
-<!--			<form method="POST" action="/predict">-->
-<!--				<div id="signup-form">-->
-<!--					<input type="text" name="title" id="title" placeholder="Title" />-->
-<!--				</div>-->
-<!--				<div>-->
-<!--					<br>-->
-<!--				</div>-->
-<!--				<div id="signup-form">-->
-<!--					<input type="text" name="body" id="body" placeholder="Body" />-->
-<!--				</div>-->
-<!--				<div>-->
-<!--					<br>-->
-<!--				</div>-->
-<!--				<input type="submit" value="Start" />-->
-<!--			</form>-->
-
-		<!-- Footer -->
-			<footer id="footer">
-				<ul class="icons">
-					<li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
-					<li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
-					<li><a href="#" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
-					<li><a href="#" class="icon fa-envelope"><span class="label">Email</span></a></li>
-				</ul>
-				<ul class="copyright">
-					<li>&copy; Untitled.</li><li>Credits: <a href="http://html5up.net">HTML5 UP</a></li>
-				</ul>
-			</footer>
-
-		<!-- Scripts -->
-		<script src="{{ url_for('static', filename='js/main.js') }}">document.write("This is written from JavaScript");</script>
-
-	</body>
-	
+                        </td>
+                </tr>
+                </table>
+            </form>
+        <!-- Footer -->
+<!--            <footer id="footer">-->
+<!--                <ul class="icons">-->
+<!--                    <li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>-->
+<!--                    <li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>-->
+<!--                    <li><a href="#" class="icon brands fa-github"><span class="label">GitHub</span></a></li>-->
+<!--                    <li><a href="#" class="icon fa-envelope"><span class="label">Email</span></a></li>-->
+<!--                </ul>-->
+<!--                <ul class="copyright">-->
+<!--                    <li>&copy; Untitled.</li><li>Credits: <a href="http://html5up.net">HTML5 UP</a></li>-->
+<!--                </ul>-->
+<!--            </footer>-->
+        <!-- Scripts -->
+            <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    </body>
 </html>
+
+

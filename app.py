@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import json
 from module import *
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, jsonify
 
 app = Flask(__name__)
 
@@ -21,9 +21,10 @@ def main_get(title=None, body=None):
 @app.route("/show_result", methods=['GET', 'POST'])
 def show_result(title=None, body=None):
     label_probs, title_color, title_token, body_color, body_token = Visualization_Result(title, body, 1)
+    label_probs = label_probs[0].tolist()
 
     if request.method == "POST":
-        return render_template('home.html', Title='Title: ', Body='Body: ', label_probs=label_probs, title_color=title_color, title_token=title_token, body_color=body_color, body_token=body_token)
+        return render_template('home.html', Title='Title: ', Body='Body: ',title=title, body=body, label_probs=label_probs, title_color=title_color, title_token=title_token, body_color=body_color, body_token=body_token)
 
 @app.route('/about')
 def about():

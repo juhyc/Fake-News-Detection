@@ -638,7 +638,8 @@ textarea {
   outline: 0;
   padding: 0 1em;
   text-decoration: none;
-  width: 100%; }
+  width: 32em;
+  height: 20em;}
   input[type="text"]:invalid,
   input[type="password"]:invalid,
   input[type="email"]:invalid,
@@ -855,7 +856,7 @@ button,
   display: -ms-flex;
   display: flex;
   position: relative; }
-  #signup-form input[type="text"],
+  #signup-form input[type="text"]{width : 32em; height:3em;}
   #signup-form input[type="password"],
   #signup-form input[type="email"] {
     width: 22em;
