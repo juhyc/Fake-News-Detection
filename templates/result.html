@@ -1,42 +1,27 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>
-        제발 돼라~~
-    </title>
-    <style>
-    </style>
+    <title>Fake News Detection</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
 </head>
 <body>
     <form method="POST" action="/show_result">
-<!--        <div>-->
-<!--            <label for="label_probs"> Label  </label>-->
-<!--            <p>  </p>-->
-<!--            <input type="text" name="label_probs">-->
-<!--        </div>-->
-
-<!--        <div>-->
-<!--            <label for="num"> 몇 번 </label>-->
-<!--            <input type="text" name="num">-->
-<!--        </div>-->
-<!--        <div class='button'>-->
-<!--            <button type="submit">숫자만큼 별 표시하기</button>-->
-<!--        </div>-->
+        <div>
+            <p style='font-size: large'><b>Title:  </b>
+                {% for i in range(title_color | length) %}
+                    <span style='background-color: {{ title_color[i] }};'>{{title_token[i]}} </span>
+                {% endfor %}
+            </p>
+        <hr>
+            <p style='font-size: large'><b>Body:  </b>
+                {% for i in range(body_color | length) %}
+                    <span style='background-color: {{ body_color[i] }};'>{{body_token[i]}} </span>
+                {% endfor %}
+            </p><br>
+        </hr>
+        </div>
     </form>
-    <div>
-        <p>
-            <img src="{{ image }}"/>
-            <br></br>
-            {{label_probs}}
-            <br></br>
-            {{title_color}}
-            <br></br>
-            {{title_token}}
-            <br></br>
-            {{body_color}}
-            <br></br>
-            {{body_token}}
-        </p>
-    </div>
 </body>
 </html>

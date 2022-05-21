@@ -24,11 +24,16 @@ section, summary, time, mark, audio, video {
   vertical-align: baseline; }
 
 article, aside, details, figcaption, figure,
-footer, header, hgroup, menu, nav, section {
+footer, header, hgroup, menu, nav {
   display: block; }
 
+section {
+  display : inline-block;
+}
+
 body {
-  line-height: 1; }
+  line-height: 1;}
+
 
 ol, ul {
   list-style: none; }
@@ -81,6 +86,7 @@ html, body {
   height: 100%;
   overflow-x: hidden;
   width: 100%; }
+
   @media screen and (max-height: 640px) {
     html, body {
       height: auto;
@@ -100,7 +106,8 @@ body {
   -ms-justify-content: center;
   justify-content: center;
   background-color: #000;
-  padding: 6em 4em 4em 4em; }
+  padding: 6em 4em 4em 4em;}
+
   body.is-preload *, body.is-preload *:before, body.is-preload *:after {
     -moz-animation: none !important;
     -webkit-animation: none !important;
@@ -111,7 +118,8 @@ body {
     -ms-transition: none !important;
     transition: none !important; }
   body > * {
-    position: relative;
+    position: sticky ;
+    /*position: relative;*/
     z-index: 2; }
   @media screen and (max-width: 1680px) {
     body {
@@ -274,6 +282,13 @@ em, i {
 p {
   margin: 0 0 2em 0; }
 
+#p-description {
+  position: fixed;
+  left: 80px;
+  top: 200px;
+  margin: 0 0 2em 0;
+  padding: 1px 1px 1px 1px;}
+
 h1, h2, h3, h4, h5, h6 {
   color: #fff;
   font-weight: 700;
@@ -284,8 +299,12 @@ h1, h2, h3, h4, h5, h6 {
     text-decoration: none; }
 
 h1 {
+  position: fixed;
+  left: 80px;
+  top: 80px;
   font-size: 2.5em;
-  line-height: 1.25em; }
+  line-height: 1.25em;
+  padding: 1px 1px 1px 1px;}
 
 h2 {
   font-size: 1.75em;
@@ -356,7 +375,8 @@ section.special, article.special {
 
 header p {
   color: rgba(255, 255, 255, 0.5);
-  position: relative;
+  position: fixed;
+ /* position: relative;*/
   margin: 0 0 1.5em 0; }
 
 header h2 + p {
@@ -390,12 +410,16 @@ header h6 + p {
 
     #nav {
       text-align: center;
-      position: absolute;
+      /* position: absolute; */
+      position : fixed;
+
       top: 0;
       left: 0;
       width: 100%;
       height: 4em;
       line-height: 4em;
+      z-index: 3;
+
     }
   
       #nav > ul {
@@ -495,7 +519,13 @@ ul.icons {
 
 /* Form */
 form {
-  margin: 0 0 2em 0; }
+  overflow-y: auto;
+  position: relative;
+  margin: 0 0 2em 0;
+  left: -5px;
+  top: 80px;
+  }
+
   form .message {
     text-decoration: none;
     -moz-transition: opacity 0.2s ease-in-out, -moz-transform 0.2s ease-in-out;
@@ -613,6 +643,8 @@ label {
     transform: scale(1); } }
 
 input[type="text"],
+input[type="text2"],
+
 input[type="password"],
 input[type="email"],
 select,
@@ -638,14 +670,19 @@ textarea {
   outline: 0;
   padding: 0 1em;
   text-decoration: none;
-  width: 100%; }
+  width: 32em; 
+  height:15em;}
   input[type="text"]:invalid,
+  input[type="text2"]:invalid,
+
   input[type="password"]:invalid,
   input[type="email"]:invalid,
   select:invalid,
   textarea:invalid {
     box-shadow: none; }
   input[type="text"]:focus,
+  input[type="text2"]:focus,
+
   input[type="password"]:focus,
   input[type="email"]:focus,
   select:focus,
@@ -674,6 +711,8 @@ select {
     display: none; }
 
 input[type="text"],
+input[type="text2"],
+
 input[type="password"],
 input[type="email"],
 select {
@@ -769,6 +808,7 @@ input[type="radio"] + label:before {
   color: rgba(255, 255, 255, 0.5) !important;
   opacity: 1.0; }
 
+
 /* Button */
 input[type="submit"],
 input[type="reset"],
@@ -849,16 +889,19 @@ button,
     margin: 0 0 1em 0; } }
 
 /* Signup Form */
+
 #signup-form {
   display: -moz-flex;
   display: -webkit-flex;
   display: -ms-flex;
   display: flex;
-  position: relative; }
-  #signup-form input[type="text"],
-  #signup-form input[type="password"],
+  position: left;}
+  #signup-form input[type="text"]{width: 32em; height:3em;}
+  #signup-form input[type="text2"]{width: 32em; height:30em;}
+  #signup-form input[type="password"]{width: 32em; height:4em;}
   #signup-form input[type="email"] {
-    width: 18em; }
+    width: 32em; height:20em; }
+
   #signup-form > * {
     margin: 0 0 0 1em; }
   #signup-form > :first-child {
@@ -884,19 +927,22 @@ button,
         margin-top: 0;
         position: absolute; } }
 
+
 /* Footer */
 #footer {
   -moz-transition: opacity 0.5s ease-in-out;
   -webkit-transition: opacity 0.5s ease-in-out;
   -ms-transition: opacity 0.5s ease-in-out;
   transition: opacity 0.5s ease-in-out;
-  bottom: 4em;
+  bottom: 0;
   color: rgba(255, 255, 255, 0.5);
-  left: 4em;
+  left: 0;
   opacity: 0.5;
-  position: absolute; }
+  top : 0em;
+  position: relative; }
   #footer .icons {
-    margin: 0 0 0.5em 0; }
+    margin: 0 0 0em 0; }
+
   #footer .copyright {
     font-size: 0.8em;
     list-style: none;

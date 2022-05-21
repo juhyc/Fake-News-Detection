@@ -114,6 +114,7 @@ def del_special(df):
 
     return df
 
+
 def tokenize_with_del_stopword(df, tokenizer, noun_scores):
     # 토큰화
     title_tok = [tokenizer.tokenize(title) for title in df['title_prep']]
@@ -140,6 +141,7 @@ def tokenize_with_del_stopword(df, tokenizer, noun_scores):
 
     return df
 
+
 def noun2sequences(df, word2index):
     title_sequences = []
     body_sequences = []
@@ -154,6 +156,7 @@ def noun2sequences(df, word2index):
     df['title_sequences'] = title_sequences
     df['body_sequences'] = body_sequences
     return df
+
 
 def separated_padding_(df, title_idx_col, body_idx_col,  # 데이터프레임, 정수화 된 title column명, 정수화 된 body column명,
                        max_title_seq_len, max_body_seq_len):  # 제목 길이, 본문 길이
@@ -170,19 +173,21 @@ def separated_padding_(df, title_idx_col, body_idx_col,  # 데이터프레임, �
 
     return _x_, _y_
 
-# 시각화
+
 def rgb_to_hex(rgb):
-    return '#%02x%02x%02x' % rgb
+    return '#%02x%02x%02x%02x' % rgb
+
 
 def attention2color(attention_score):
-    attention_score = np.asarray(attention_score, dtype=int)
     r = 255 - int(attention_score * 255)
-    color = rgb_to_hex((255, r, r))
+    color = rgb_to_hex((255, 0, 0, 255-r))
     return str(color)
+
 
 def visualize_attention(model, word2index, x_):
     # Make new model for output predictions and attentions
-    model_att = Model(inputs=model.input, outputs=[model.output, model.get_layer('attention_vec').output[-1]])
+    model_att = Model(inputs=model.input, \
+                      outputs=[model.output, model.get_layer('attention_vec').output[-1]])
 
     title_tokenized_sample = [wordidx for wordidx in x_[0][:9] if wordidx != 0]
     body_tokenized_sample = [wordidx for wordidx in x_[0][9:] if wordidx != 0]
@@ -225,6 +230,7 @@ def visualize_attention(model, word2index, x_):
         body_color.append(attention2color(body_attention))
 
     return label_probs, title_color, title_token, body_color, body_token
+
 
 def Visualization_Result(title, body, label):
     df = pd.DataFrame(columns=['title', 'body', 'label'])
