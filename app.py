@@ -3,6 +3,7 @@ import json
 from module import *
 from flask import Flask, request, render_template, jsonify
 
+
 app = Flask(__name__)
 
 @app.route("/")
@@ -37,6 +38,19 @@ def fakenews():
 @app.route('/contact')
 def contact():
     return render_template('contact.html')
+
+
+
+
+
+
+@app.route("/mysuperplot", methods=["GET"])
+def plotView():
+    # Generate plot
+
+
+    return render_template("image.html", image=pngImageB64String)
+
 
 if __name__ == "__main__":
     app.run(debug=True)
