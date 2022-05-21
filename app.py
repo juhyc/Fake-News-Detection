@@ -8,7 +8,7 @@ app = Flask(__name__)
 
 @app.route("/")
 def main():
-    return render_template("home.html")
+    return render_template("home.html", ishidden='hidden')
 
 @app.route("/predict", methods=['GET', 'POST'])
 def main_get(title=None, body=None):
@@ -17,15 +17,15 @@ def main_get(title=None, body=None):
         body = request.form["body"]
         return show_result(title, body)
     else:
-        return render_template("home.html")
+        return render_template("home.html", ishidden='hidden')
 
-@app.route("/show_result", methods=['GET', 'POST'])
+@app.route("/show_result", methods=["POST", "GET"])
 def show_result(title=None, body=None):
     label_probs, title_color, title_token, body_color, body_token = Visualization_Result(title, body, 1)
     label_probs = label_probs[0].tolist()
 
     if request.method == "POST":
-        return render_template('home.html', Title='Title: ', Body='Body: ',title=title, body=body, label_probs=label_probs, title_color=title_color, title_token=title_token, body_color=body_color, body_token=body_token)
+        return render_template('home.html', title=title, body=body, label_probs=label_probs, title_color=title_color, title_token=title_token, body_color=body_color, body_token=body_token,  ishidden='visible')
 
 @app.route('/about')
 def about():

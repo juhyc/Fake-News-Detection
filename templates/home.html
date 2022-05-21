@@ -51,13 +51,13 @@
 		<td>
 			<div>
 				<p style='font-size: large'>
-					<b>{{Title}}</b>
+					<b style="visibility:{{ ishidden }}">Title: </b>
 					{% for i in range(title_color | length) %} <span style='background-color: {{ title_color[i] }};'>{{title_token[i]}} </span>
 					{% endfor %}
 				</p>
-				<hr>
+				<hr style="visibility:{{ ishidden }}">
 				<p style='font-size: large'>
-					<b>{{Body}}</b>
+					<b style="visibility:{{ ishidden }}">Body: </b>
 					{% for i in range(body_color | length) %} <span style='background-color: {{ body_color[i] }};'>{{body_token[i]}} </span>
 					{% endfor %}
 				</p>
