@@ -66,52 +66,61 @@
 			<div>
 				<canvas align="right" id="doughnut_chart" width="450" height="450"></canvas>
 				<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+<!--				<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js"></script>-->
 				<script>
-                                    const ctx = document.getElementById('doughnut_chart').getContext('2d');
-                                    const doughnut_chart = new Chart(ctx, {
-                                        type: 'doughnut',
-                                        data: {
-                                          labels: ["Real News", "Fake News"],
-                                          labelColor : ['#FFFFFF'],
-                                          fontColor: ['#FFFFFF'],
-                                          color : ['#FFFFFF'],
-                                          fontSize : 32,
-                                          datasets: [
-                                            {
-                                              datalabels: "Fake or Real News",
-                                              color:['#FFFFFF'],
-                                              backgroundColor: ["#E8C3B9","#8E5EA2"],
-                                              data: {{label_probs|safe}}
-                                            }
-                                          ]
-                                        },
-                                        options: {
-                                            responsive: false,
-                                          title: {
-                                            display: true,
-                                            text: 'Check your News',
-                                            fontSize: 35,
-                                            fontColor: ['#FFFFFF']
-                                          },
-                                          legend:{
-                                              labels:{
-                                                  fontColor : ['#FFFFFF'],
-                                                  fontSize : 18
-                                              }
-                                          },
-                                          plugins:{
-                                            datalabels:{
-                                                color : ['#FFFFFF'],
-                                                labels:{
-                                                    value:{
-                                                        color : ['#FFFFFF']
-                                                    }
-                                                }
-                                            },
-                                          },
-                                            }
-                                    });
-                                </script>
+					const ctx = document.getElementById('doughnut_chart').getContext('2d');
+					const doughnut_chart = new Chart(ctx, {
+						type: 'doughnut',
+						data: {
+						  labels: ["Real News", "Fake News"],
+						  labelColor : ['#FFFFFF'],
+						  fontColor: ['#FFFFFF'],
+						  color : ['#FFFFFF'],
+						  fontSize : 32,
+						  datasets: [
+							{
+							  datalabels: "Fake or Real News",
+							  color:['#FFFFFF'],
+							  backgroundColor: ["#E8C3B9","#8E5EA2"],
+							  data: {{label_probs|safe}}
+							}
+						  ]
+						},
+						options: {
+							responsive: false,
+						  title: {
+							display: true,
+							text: 'Score',
+							fontSize: 35,
+							fontColor: ['#FFFFFF']
+						  },
+						  legend:{
+							  labels:{
+								  fontColor : ['#FFFFFF'],
+								  fontSize : 18
+							  }
+						  },
+							tooltips: {
+								bodyFontSize:30,
+								callbacks: {
+									label: function (tooltipItem, data) {
+										return data['datasets'][0]['data'][tooltipItem['index']] + '%'
+									}
+								}
+							},
+						  plugins:{
+							datalabels:{
+								color : ['#FFFFFF'],
+								labels:{
+									value:{
+										color : ['#FFFFFF']
+									}
+								}
+							},
+						  },
+                     }
+					});
+				</script>
 			</div>
 		</td>
 	</tr>
