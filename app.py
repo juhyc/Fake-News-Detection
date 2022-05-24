@@ -22,6 +22,9 @@ def main_get(title=None, body=None):
 @app.route("/show_result", methods=["POST", "GET"])
 def show_result(title=None, body=None):
     label_probs, title_color, title_token, body_color, body_token = Visualization_Result(title, body, 1)
+    label_probs = label_probs.astype(np.float)
+    label_probs[0][0] = round(label_probs[0][0] * 100, 2)
+    label_probs[0][1] = round(label_probs[0][1] * 100, 2)
     label_probs = label_probs[0].tolist()
 
     if request.method == "POST":
