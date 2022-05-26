@@ -43,10 +43,6 @@ def contact():
     return render_template('contact.html')
 
 
-
-
-
-
 @app.route("/mysuperplot", methods=["GET"])
 def plotView():
     # Generate plot
