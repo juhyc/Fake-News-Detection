@@ -12,71 +12,72 @@
 		<link rel="stylesheet" href="{{ url_for('static', filename='css/other.css') }}" />
 	</head>
 
-	<body class="is-preload">
+	<div style="padding: 300px 400px 0px 400px;">
+		<body class="is-preload">
 
-		<!-- Nav -->
-		<nav id="nav">
-			<ul>
-				<li><a href="/">Home</a></li>
-				<li class="break"><a href="fakenews">Fake News</a></li>
-				<li><a href="about">About</a></li>
-				<li><a href="contact">Contact Us</a></li>
-			</ul>
-		</nav>
+			<!-- Nav -->
+			<nav id="nav">
+				<ul>
+					<li><a href="/">Home</a></li>
+					<li class="break"><a href="fakenews">Fake News</a></li>
+					<li><a href="about">About</a></li>
+					<li><a href="contact">Contact Us</a></li>
+				</ul>
+			</nav>
 
-		<!-- Header -->
-			<header id="header">
-				<h1 id="h1_fake">What is Fake News</h1>
-<!--				<br>-->
-<!--				<br>-->
-				<p> 우리는 하루에도 수없이 생성되는 기사를 접하는 사회에 살고 있습니다. 그 기사들은 페이스북, 트위터와 같은 SNS를 통해 급속도로 확산되고 있습니다. <br>
-					거짓 정보가 담긴 가짜뉴스는 이와 같은 상황 속에서 널리 유포되고 있으며 이는 큰 사회적 문제가 되었습니다. <br>따라서 이 가짜뉴스를 판별하는 역할은 매우 중요해지고 있습니다.<br>
-					가짜뉴스를 판별하는 것은 훈련된 전문가에게도 매우 복잡하고 번거로운 작업입니다. 인공지능은 복잡한 프로세스를 자동화함으로써 우리에게 편리함을 제공할 수 있습니다.<br><br>
-					가짜뉴스는 크게 6가지 유형으로 나뉠 수 있습니다.
-					 Incongruent news 는 또 4가지 label이 있습니다.
-				</p>
-				<table class="type06" style="width:60%">
-					  <tr>
-						<th scope="row"><b>Agrees</b></th>
-						<td>The body text agrees with the headline.</td>
-					  </tr>
-					  <tr>
-						<th scope="row"><b>Disagrees</b></th>
-						<td>The body text disagrees with the headline.</td>
-					  </tr>
-					  <tr>
-						<th scope="row"><b>Discusses</b></th>
-						<td>The body text discuss the same topic as the headline, but does not take a position.</td>
-					  </tr>
+			<!-- Header -->
+				<header id="header">
+					<h1 id="h1_fake">What is Fake News</h1>
+	<!--				<br>-->
+	<!--				<br>-->
+					<p> 우리는 하루에도 수없이 생성되는 기사를 접하는 사회에 살고 있습니다. 그 기사들은 페이스북, 트위터와 같은 SNS를 통해 급속도로 확산되고 있습니다. <br>
+						거짓 정보가 담긴 가짜뉴스는 이와 같은 상황 속에서 널리 유포되고 있으며 이는 큰 사회적 문제가 되었습니다. <br>따라서 이 가짜뉴스를 판별하는 역할은 매우 중요해지고 있습니다.<br>
+						가짜뉴스를 판별하는 것은 훈련된 전문가에게도 매우 복잡하고 번거로운 작업입니다. 인공지능은 복잡한 프로세스를 자동화함으로써 우리에게 편리함을 제공할 수 있습니다.<br><br>
+						가짜뉴스는 크게 6가지 유형으로 나뉠 수 있습니다.
+						Incongruent news 는 또 4가지 label이 있습니다.
+					</p>
+					<table class="type06" style="width:60%">
 						<tr>
-						<th scope="row" ><b>Unrelated</b></th>
-						<td>The body text discuseses a different topic than the headline.</td>
-					  </tr>
-				</table>
-				<br>
-				<p>
-					이 중 제목과 본문이 관련 없는 경우인 Incongruent News를 검출하는데 집중한 모델을 인공지능 기술, 특히 기계 학습 및 자연어 처리를 활용하여 개발했습니다.
+							<th scope="row"><b>Agrees</b></th>
+							<td>The body text agrees with the headline.</td>
+						</tr>
+						<tr>
+							<th scope="row"><b>Disagrees</b></th>
+							<td>The body text disagrees with the headline.</td>
+						</tr>
+						<tr>
+							<th scope="row"><b>Discusses</b></th>
+							<td>The body text discuss the same topic as the headline, but does not take a position.</td>
+						</tr>
+							<tr>
+							<th scope="row" ><b>Unrelated</b></th>
+							<td>The body text discuseses a different topic than the headline.</td>
+						</tr>
+					</table>
 					<br>
-					우리 팀은 Incongruent news 중 Agree / Disagree 를 식별하는데 좀 더 집중했습니다.
-				</p>
-			</header>
+					<p>
+						이 중 제목과 본문이 관련 없는 경우인 Incongruent News를 검출하는데 집중한 모델을 인공지능 기술, 특히 기계 학습 및 자연어 처리를 활용하여 개발했습니다.
+						<br>
+						우리 팀은 Incongruent news 중 Agree / Disagree 를 식별하는데 좀 더 집중했습니다.
+					</p>
+				</header>
 
-		<!-- Footer -->
-<!--			<footer id="footer">-->
-<!--				<ul class="icons">-->
-<!--					<li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>-->
-<!--					<li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>-->
-<!--					<li><a href="#" class="icon brands fa-github"><span class="label">GitHub</span></a></li>-->
-<!--					<li><a href="#" class="icon fa-envelope"><span class="label">Email</span></a></li>-->
-<!--				</ul>-->
-<!--				<ul class="copyright">-->
-<!--					<li>&copy; Untitled.</li><li>Credits: <a href="http://html5up.net">HTML5 UP</a></li>-->
-<!--				</ul>-->
-<!--			</footer>-->
+			<!-- Footer -->
+	<!--			<footer id="footer">-->
+	<!--				<ul class="icons">-->
+	<!--					<li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>-->
+	<!--					<li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>-->
+	<!--					<li><a href="#" class="icon brands fa-github"><span class="label">GitHub</span></a></li>-->
+	<!--					<li><a href="#" class="icon fa-envelope"><span class="label">Email</span></a></li>-->
+	<!--				</ul>-->
+	<!--				<ul class="copyright">-->
+	<!--					<li>&copy; Untitled.</li><li>Credits: <a href="http://html5up.net">HTML5 UP</a></li>-->
+	<!--				</ul>-->
+	<!--			</footer>-->
 
-		<!-- Scripts -->
-			<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+			<!-- Scripts -->
+				<script src="{{ url_for('static', filename='js/main.js') }}"></script>
 
-	</body>
-
+		</body>
+	</div>
 </html>
