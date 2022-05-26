@@ -47,6 +47,39 @@ table {
   border-collapse: collapse;
   border-spacing: 0; }
 
+table.type06 {
+  border-collapse: collapse;
+  text-align: left;
+  line-height: 1.5;
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  margin: 20px 10px;
+}
+table.type06 th {
+  width: 150px;
+  padding: 10px;
+  font-weight: bold;
+  vertical-align: top;
+}
+table.type06 td {
+  width: 350px;
+  padding: 10px;
+  vertical-align: top;
+}
+table.type06 .even {
+  background: #efefef;
+}
+
+/*.container{*/
+/*  position:relative;*/
+/*  height: 100vh;*/
+/*  width: 100vw;*/
+/*}*/
+img {
+ width : 40%;
+ height: 70%;
+}
+
 body {
   -webkit-text-size-adjust: none; }
 
@@ -295,12 +328,29 @@ h1, h2, h3, h4, h5, h6 {
     text-decoration: none; }
 
 h1 {
-  position: fixed;
+  position: static;
+  left: 80px;
+  top: 80px;
+  font-size: 2.5em;
+  line-height: 1.25em;
+  padding: 100px 1px 1px 1px;}
+
+#h1_fake {
+  position: static;
   left: 80px;
   top: 80px;
   font-size: 2.5em;
   line-height: 1.25em;
   padding: 1px 1px 1px 1px;}
+
+
+#h1_about {
+  position: static;
+  left: 80px;
+  top: 80px;
+  font-size: 2.5em;
+  line-height: 1.25em;
+  padding: 600px 1px 1px 1px;}
 
 h2 {
   font-size: 1.75em;
@@ -369,9 +419,13 @@ hr {
 section.special, article.special {
   text-align: center; }
 
+/*header {*/
+/*  padding-top:200px;*/
+/*}*/
+
 header p {
-  color: rgba(255, 255, 255, 0.5);
-  position: fixed;
+  color: rgba(255, 255, 255, 1);
+  position: relative;
   margin: 0 0 1.5em 0; }
 
 header h2 + p {
@@ -414,20 +468,20 @@ header h6 + p {
       line-height: 4em;
       z-index: 3;
     }
-  
+
       #nav > ul {
         margin: 0;
       }
-  
+
         #nav > ul > li {
           display: inline-block;
           margin-left: 1em;
         }
-  
+
           #nav > ul > li > ul {
             display: none;
           }
-  
+
           #nav > ul > li > span, #nav > ul > li > a {
             color: #fff;
             text-decoration: none;
@@ -442,18 +496,18 @@ header h6 + p {
             -ms-transition: border-color 0.25s ease-in-out, background-color 0.25s ease-in-out;
             transition: border-color 0.25s ease-in-out, background-color 0.25s ease-in-out;
           }
-  
+
           #nav > ul > li.active > span, #nav > ul > li.active > a {
             border-color: rgba(255, 255, 255, 0.75);
             background-color: rgba(255, 255, 255, 0.15);
             color: #fff;
           }
-  
+
           #nav > ul > li:first-child {
             margin-left: 0;
           }
-  
-  
+
+
 
 /* Icon */
 .icon {
@@ -661,7 +715,7 @@ textarea {
   outline: 0;
   padding: 0 1em;
   text-decoration: none;
-  width: 32em; 
+  width: 32em;
   height:15em;}
   input[type="text"]:invalid,
   input[type="text2"]:invalid,
@@ -857,10 +911,11 @@ button,
 /* Header */
 #header h1 {
   font-size: 3.25em;
-  margin: 0 0 0.55em 0; }
+  margin: 0 0 0.55em 0;
+  }
 
 #header p {
-  font-size: 1.35em;
+  font-size: 1.0em;
   line-height: 1.65em; }
 
 #header a {
@@ -914,7 +969,7 @@ button,
         line-height: inherit;
         margin-top: 0;
         position: absolute; } }
-        
+
 
 
 /* Footer */
